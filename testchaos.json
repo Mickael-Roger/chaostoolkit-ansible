@@ -1,0 +1,74 @@
+{
+    "version": "1.0.0",
+    "title": "Test only",
+    "description": "Test only",
+    "tags": ["test"],
+    "steady-state-hypothesis": {
+        "title": "Tests",
+        "probes": [
+            {
+                "type": "probe",
+                "name": "test-gather-fact",
+                "tolerance": {
+                  "name": "test-tol",
+                  "type": "probe",
+                  "provider": {
+                    "type": "python",
+                    "module": "chaosansible.tolerances",
+                    "func": "chaosansible_eval",
+                    "arguments": {
+                      "operation": "equal",
+                      "element": "localhost.task",
+                      "result": "/home/mickael"
+                    }
+                  }
+                },
+                "provider": {
+                    "type": "python",
+                    "module": "chaosansible.probes",
+                    "func": "chaosansible_probe",
+                    "arguments": {
+                        "host_list": ["localhost"],
+                        "facts": "yes",
+                        "become": false,
+                        "ansible": {
+                            "module": "shell",
+                            "args": "pwd"
+                        }
+                    }
+                }
+            }
+        ]
+    },
+    "method": [
+        {
+            "type": "action",
+            "name": "swap-to-expired-cert",
+            "provider": {
+                "type": "process",
+                "path": "sleep",
+                "arguments": "1"
+            }
+        },
+        {
+            "type": "probe",
+            "name": "read-tls-cert-expiry-date",
+            "provider": {
+                "type": "process",
+                "path": "sleep",
+                "arguments": "1"
+            }
+        }
+    ],
+    "rollbacks": [
+        {
+            "type": "action",
+            "name": "swap-to-vald-cert",
+            "provider": {
+                "type": "process",
+                "path": "sleep",
+                "arguments": "1"
+            }
+        }
+    ]
+}
