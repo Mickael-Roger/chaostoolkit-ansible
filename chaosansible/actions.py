@@ -10,6 +10,7 @@ from chaoslib.types import Configuration, Secrets
 
 import json
 import shutil
+from random import randint
 
 import ansible.constants as C
 from ansible.executor.task_queue_manager import TaskQueueManager
@@ -72,10 +73,11 @@ def chaosansible_run( host_list: list = ('localhost'),
           become: bool = False,
           run_once: bool = False,
           ansible: dict = {},
+          num_target: str = 'all',
           secrets: Secrets = None ):
     
     """
-    Gather facts through ansible
+    Run a task through ansible and eventually gather facts from host
     """
 
     # Check for correct inputs
@@ -89,19 +91,44 @@ def chaosansible_run( host_list: list = ('localhost'),
     configuration = configuration or {}
 
 
-    # Ansible configuration elements
-    module_path = configuration.get('module_path') or None
-    become_user = configuration.get('become_user') or None
-    ssh_key_path = configuration.get('ssh_key_path') or None
+####
+#
+#
+# https://docs.ansible.com/ansible/latest/reference_appendices/config.html
+#
+#
+####
+
+
+    # Ansible configuration elements    
+    module_path = configuration.get('ansible_module_path') or None
+    become_user = configuration.get('ansible_become_user') or None
+    ssh_key_path = configuration.get('ansible_ssh_private_key') or None
     ansible_user = configuration.get('ansible_user') or None
 
     context.CLIARGS = ImmutableDict(connection='smart', verbosity=0, module_path=module_path, forks=10, become=become,
-                                    become_method=None, become_user=become_user, check=False, diff=False)
+                                    become_method=None, become_user=become_user, check=False, diff=False, private_key_file=ssh_key_path, remote_user=ansible_user)
+
+
+    # Update host_list regarding the number of desired target. Need to generate a new host-list because after being update, this list will be used later
+    new_host_list = host_list[:]
+    if num_target != 'all':
+        try:
+            nb_remove_target = len(new_host_list) - int(num_target)
+            
+            if nb_remove_target > 0:
+                for i in range(nb_remove_target):
+                    rand = randint(0, len(new_host_list))
+                    print(rand)
+                    new_host_list.pop(rand)
+
+        except:
+            raise InvalidActivity('Could not generate host list')
 
 
     # Create an inventory
-    sources = ','.join(host_list)
-    if len(host_list) == 1:
+    sources = ','.join(new_host_list)
+    if len(new_host_list) == 1:
         sources += ','
 
     loader = DataLoader() 
@@ -131,7 +158,7 @@ def chaosansible_run( host_list: list = ('localhost'),
     # Ansible playbook
     play_source = dict(
         name="Ansible Play",
-        hosts=host_list,
+        hosts=new_host_list,
         gather_facts=facts,
         tasks=[
             dict(name='facts', action=dict(module='debug', args=dict(var='ansible_facts'))),

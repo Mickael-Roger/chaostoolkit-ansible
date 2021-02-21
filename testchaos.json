@@ -3,6 +3,12 @@
     "title": "Test only",
     "description": "Test only",
     "tags": ["test"],
+    "configuration": {
+        "ansible_module_path": "/var/lib/ansible/share",
+        "ansible_become_user": "root",
+        "ansible_ssh_private_key": "/home/mickael/.ssh/id_rsa",
+        "ansible_user": "mickael"
+    },
     "steady-state-hypothesis": {
         "title": "Tests",
         "probes": [
@@ -10,25 +16,17 @@
                 "type": "probe",
                 "name": "test-gather-fact",
                 "tolerance": {
-                  "name": "test-tol",
-                  "type": "probe",
-                  "provider": {
-                    "type": "python",
-                    "module": "chaosansible.tolerances",
-                    "func": "chaosansible_eval",
-                    "arguments": {
-                      "operation": "equal",
-                      "element": "localhost.task",
-                      "result": "/home/mickael"
-                    }
-                  }
+                  "type": "jsonpath",
+                  "path": "$.localhost.task",
+                  "expect": "/home/mickael"
                 },
                 "provider": {
                     "type": "python",
                     "module": "chaosansible.probes",
                     "func": "chaosansible_probe",
                     "arguments": {
-                        "host_list": ["localhost"],
+                        "host_list": ["localhost", "mickael"],
+                        "num_target": "all",
                         "facts": "yes",
                         "become": false,
                         "ansible": {
@@ -43,11 +41,24 @@
     "method": [
         {
             "type": "action",
-            "name": "swap-to-expired-cert",
+            "name": "test-create-file",
             "provider": {
-                "type": "process",
-                "path": "sleep",
-                "arguments": "1"
+                "type": "python",
+                "module": "chaosansible.actions",
+                "func": "chaosansible_run",
+                "arguments": {
+                    "host_list": ["localhost"],
+                    "num_target": "all",
+                    "facts": "yes",
+                    "become": false,
+                    "ansible": {
+                        "module": "file",
+                        "args": {
+                            "path": "/tmp/test1234",
+                            "state": "touch"
+                        }
+                    }
+                }
             }
         },
         {
