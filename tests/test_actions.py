@@ -15,8 +15,6 @@ def test_chaosansible_run_random():
 
     jsonresult = json.loads(result)
 
-    print(jsonresult)
-
     assert len(jsonresult) == 1
 
 
@@ -27,8 +25,6 @@ def test_chaosansible_run_failed():
         chaosansible_run(ansible={'module':'shell', 'args': 'fghf'},
                                   host_list=['localhost'])
     
-    print(excinfo)
-
     assert "Failed to run ansible task" in str(excinfo.value)
 
 
@@ -39,8 +35,6 @@ def test_chaosansible_run_unreachable():
         chaosansible_run(ansible={'module':'shell', 'args': 'ls'},
                                   host_list=['1.1.1.1'])
     
-    print(excinfo)
-
     assert "At least one target is down" in str(excinfo.value)
 
 
@@ -50,8 +44,6 @@ def test_chaosansible_run_no_ansible_module():
     with pytest.raises(InvalidActivity) as excinfo:
         chaosansible_run(ansible={'args': 'ls'},
                                   host_list=['localhost'])
-    
-    print(excinfo)
 
     assert "No ansible module defined" in str(excinfo.value)
 
@@ -62,7 +54,5 @@ def test_chaosansible_run_no_args():
     with pytest.raises(InvalidActivity) as excinfo:
         chaosansible_run(ansible={'module': 'shell'},
                                   host_list=['localhost'])
-    
-    print(excinfo)
 
     assert "No ansible module args defined" in str(excinfo.value)

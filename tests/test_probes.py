@@ -18,8 +18,6 @@ def test_chaosansible_probe_factsonly():
 
     jsonresult = json.loads(result)
 
-    print(jsonresult)
-
     assert type(jsonresult['localhost']['facts']) is dict and jsonresult['localhost']['facts']
 
 
