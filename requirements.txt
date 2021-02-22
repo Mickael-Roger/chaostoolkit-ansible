@@ -1,4 +1,4 @@
 chaostoolkit-lib>=1.1.2
 logzero
-ansible>=2.10.3
+ansible>=2.9.0,<3.0
 jsonpath-ng

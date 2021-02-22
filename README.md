@@ -12,7 +12,7 @@ extension to the [Chaos Toolkit][chaostoolkit].
 
 
 <h1 align="center">
-    <img src="docs/images/ansible.png" alt="Gloo Shot" width="470" height="200">
+    <img src="docs/images/ansible.png" alt="Ansible Icon" width="470" height="200">
 </h1>
 
 
@@ -139,6 +139,7 @@ Configuration variables that can be used by this driver are:
 - **ansible_become_user**: Privileged user used when you call privilege escalation (root by default)
 - **ansible_ssh_private_key**: Your ssh private key used to connect to targets (~/.ssh/id_rsa by default)
 - **ansible_user**: User on target host used by ansible (current username by default)
+- become_ask_pass
 
 In case you need to change one/or many default configuration(s), you can specify your value using the configuration block
 
@@ -160,7 +161,7 @@ You can use function `chaosansible_run` and `chaosansible_probe` the same way.
       "func": "chaosansible_run",
       "arguments": {
           "host_list": ["localhost", "myserver1"],
-          "facts": "yes",
+          "facts": true,
           "become": false,
           "run_once": false,
           "num_target": "all",
@@ -178,7 +179,7 @@ Arguments list (Most argument are classical ansible parameters):
 | Argument | Type | Required | Default value | Description |
 | --- | --- | --- | --- | --- |
 | host_list | Array |  | localhost | List of host to use |
-| facts | str |  | no | "no" or "yes" to gather_facts |
+| facts | bool |  | false | Gather_facts |
 | become | bool |  | false | Escalate privilege to run task |
 | run_once | bool |  | false | Run the task only once on one target |
 | num_target | str |  | all | "all" or "x" where x is an integer. Run the task to only x target among the host_list. Ideal to create random event |
