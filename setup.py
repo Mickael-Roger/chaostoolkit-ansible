@@ -22,6 +22,8 @@ classifiers = [
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: Implementation',
     'Programming Language :: Python :: Implementation :: CPython'
 ]
@@ -46,7 +48,7 @@ with io.open('requirements.txt') as f:
 
 setup_params = dict(
     name=name,
-    version='0.0.1',
+    version='0.1.9',
     description=desc,
     long_description=long_desc,
     classifiers=classifiers,
