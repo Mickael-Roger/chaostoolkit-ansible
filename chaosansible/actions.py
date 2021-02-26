@@ -62,7 +62,7 @@ class ResultsCollectorJSONCallback(CallbackBase):
 
 
 def random_host(host_list: list,
-                 num_target: int):
+                num_target: int):
 
     new_host_list = host_list[:]
 
