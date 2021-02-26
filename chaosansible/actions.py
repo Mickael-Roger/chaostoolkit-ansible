@@ -61,6 +61,28 @@ class ResultsCollectorJSONCallback(CallbackBase):
         self.host_failed[host.get_name()] = result
 
 
+def random_host(host_list: list,
+                 num_target: int):
+
+    new_host_list = host_list[:]
+
+    if num_target <= 0 or num_target > len(new_host_list):
+        raise InvalidActivity('Number of target is not correct')
+
+    try:
+        nb_remove_target = len(new_host_list) - int(num_target)
+
+        if nb_remove_target > 0:
+            for i in range(nb_remove_target):
+                rand = randint(0, len(new_host_list)-1)
+                new_host_list.pop(rand)
+
+    except Exception:
+        raise InvalidActivity('Could not generate host list')
+
+    return new_host_list
+
+
 def chaosansible_run(host_list: list = ('localhost'),
                      configuration: Configuration = None,
                      facts: bool = False,
@@ -106,18 +128,10 @@ def chaosansible_run(host_list: list = ('localhost'),
     # Update host_list regarding the number of desired target.
     # Need to generate a new host-list because after being update
     # and will be used later
-    new_host_list = host_list[:]
     if num_target != 'all':
-        try:
-            nb_remove_target = len(new_host_list) - int(num_target)
-
-            if nb_remove_target > 0:
-                for i in range(nb_remove_target):
-                    rand = randint(0, len(new_host_list)-1)
-                    new_host_list.pop(rand)
-
-        except Exception:
-            raise InvalidActivity('Could not generate host list')
+        new_host_list = random_host(host_list, int(num_target))
+    else:
+        new_host_list = host_list[:]
 
     # Create an inventory
     sources = ','.join(new_host_list)
