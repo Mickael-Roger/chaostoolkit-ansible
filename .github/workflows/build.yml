@@ -25,16 +25,29 @@ jobs:
         sudo ssh-keygen -A
         sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
         sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
-
-        echo "#########################"
-        sudo sshd -T
-        echo "#########################"
-
-        id
-        cat /etc/ssh/sshd_config
+        sudo systemctl restart ssh
 
 
-        mkdir -p /home/runner/.ssh
+        echo "############# Create chaos user #############"
+        echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
+        sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
+        sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
+        sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
+
+
+        echo "########## SSH ##############"
+        sudo -u chaos ssh -v 127.0.0.1 "id"
+
+        echo "########## end of SSH ##############"
+
+        exit 1
+        
+
+
+
+
+
+        
         ssh-keygen -q -N "" -f /home/runner/.ssh/id_rsa
         ls -larth /home/runner/.ssh/
         cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
@@ -74,36 +87,29 @@ jobs:
 
 
         
-        sudo systemctl restart ssh
-
-
-        echo "########## SSH ##############"
-        ssh -v 127.0.0.1 "id"
-
-        echo "########## end of SSH ##############"
-
-        exit 1
 
 
 
-        echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
+        
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaossudopasswd --shell /bin/bash
-        sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
+        
         mkdir -p ~/.ssh
         sudo ls -la /home/chaos/.ssh/
         sudo ls -la /home/runner/.ssh/
         sudo cp -rf /home/chaos/.ssh/id_rsa /home/chaos/.ssh/id_rsa.pub /home/runner/.ssh/
+
         sudo chown -R runner:docker /home/runner/.ssh/
         chmod 400 /home/runner/.ssh/id_rsa
         chmod 640 /home/runner/.ssh/id_rsa.pub
         cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
+
         chmod 400 /home/runner/.ssh/authorized_keys
-        sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
+
+        
         sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
         sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
         sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
         sudo chmod 640 /home/chaossudopasswd/.ssh/authorized_keys
-        sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
         sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
 
     - name: Debug host github actions 2
