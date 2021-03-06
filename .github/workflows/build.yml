@@ -28,7 +28,7 @@ jobs:
         sudo systemctl restart ssh
 
         echo "#########################"
-        sshd -T
+        sudo sshd -T
         echo "#########################"
 
         id
