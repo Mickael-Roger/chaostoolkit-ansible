@@ -41,7 +41,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     
     - name: Set up ansible ${{ matrix.ansible-version}}
-      run: sudo python -m pip install ansible==${{ matrix.ansible-version }}
+      run: sudo ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ansible==${{ matrix.ansible-version }}
 
     - name: Set up chaos ${{ matrix.chaos-version}}
       run: sudo python -m pip install chaostoolkit==${{ matrix.chaos-version }}
