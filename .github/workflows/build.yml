@@ -20,6 +20,8 @@ jobs:
     - name: Debug host github actions
       run: |
         sudo systemctl status ssh
+        sudo apt update
+        sudo apt install -y net-tools
         sudo netstat -anp
         sudo ls /etc/ssh/
         sudo cat /etc/ssh/sshd_config
