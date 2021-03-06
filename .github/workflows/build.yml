@@ -29,8 +29,6 @@ jobs:
 
     - name: OS, users and ssh requirements
       run: |
-        id
-        exit 1
         sudo apt update
         sudo DEBIAN_FRONTEND=noninteractive apt install -y openssh-server openssh-client
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
