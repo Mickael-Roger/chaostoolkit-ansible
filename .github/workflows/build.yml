@@ -26,7 +26,9 @@ jobs:
         sudo ssh-keygen -A
         sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
         mkdir -p ~/.ssh
-        sudo cp /home/chaos/.ssh/id_rsa* /home/runner/.ssh/
+        sudo ls -la /home/chaos/.ssh/
+        sudo ls -la /home/runner/.ssh/
+        sudo cp -rf /home/chaos/.ssh/id_rsa* /home/runner/.ssh/
         sudo chown -R runner:docker /home/runner/.ssh/id_rsa*
         chmod 400 /home/runner/.ssh/id_rsa
         chmod 640 /home/runner/.ssh/id_rsa.pub
