@@ -32,8 +32,10 @@ jobs:
 
         ssh-keygen -q -N "" -f /home/runner/.ssh/id_rsa
         cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
-        cp /home/runner/.ssh/id_rsa.pub /etc/ssh/ssh_known_hosts
+        sudo cp /home/runner/.ssh/id_rsa.pub /etc/ssh/ssh_known_hosts
         chmod 640 /home/runner/.ssh/authorized_keys
+        sudo chown root:root /etc/ssh/ssh_known_hosts
+        sudo chmod 644 /etc/ssh/ssh_known_hosts
 
         echo "########################"
 
