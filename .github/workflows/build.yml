@@ -25,7 +25,6 @@ jobs:
         sudo ssh-keygen -A
         sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
         sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
-        sudo systemctl restart ssh
 
         echo "#########################"
         sudo sshd -T
@@ -72,6 +71,10 @@ jobs:
 
         echo "########## grep -r runner /etc/* ##############"
         sudo grep -r runner /etc/*
+
+
+        
+        sudo systemctl restart ssh
 
 
         echo "########## SSH ##############"
