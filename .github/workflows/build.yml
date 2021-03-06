@@ -46,7 +46,7 @@ jobs:
 
     - name: Debug host github actions 2
       run: |
-        sudo -u chaos ssh 127.0.0.1 "ls -la"
+        sudo -u chaos ssh -vvv 127.0.0.1 "ls -la"
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
