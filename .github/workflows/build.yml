@@ -42,7 +42,8 @@ jobs:
         sudo chmod 400 /home/chaossudopasswd/.ssh/authorized_keys
         sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
         sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
-        sudo systemctl start ssh
+        sudo sh -c 'echo -e "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" > /etc/ssh/sshd_config'
+        sudo systemctl restart ssh
 
     - name: Debug host github actions 2
       run: |
