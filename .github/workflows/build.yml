@@ -34,89 +34,7 @@ jobs:
         sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
         sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
 
-
-        echo "########## SSH ##############"
-        sudo -u chaos ssh -v 127.0.0.1 "id"
-
-        echo "########## end of SSH ##############"
-
-        exit 1
-        
-
-
-
-
-
-        
-        ssh-keygen -q -N "" -f /home/runner/.ssh/id_rsa
-        ls -larth /home/runner/.ssh/
-        cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
-        sudo cp /home/runner/.ssh/id_rsa.pub /etc/ssh/ssh_known_hosts
-        chmod 640 /home/runner/.ssh/authorized_keys
-        sudo chown root:root /etc/ssh/ssh_known_hosts
-        sudo chmod 644 /etc/ssh/ssh_known_hosts
-
-
-        echo "########### cat /etc/shadow #############"
-
-        sudo cat /etc/shadow
-
-        echo "########### echo -e 'passwordsuper\npasswordsuper' | sudo passwd runner #############"
-
-        echo -e 'passwordsuper\npasswordsuper' | sudo passwd runner
-
-        echo "######### /home/runner/.ssh/id_rsa ###############"
-
-        cat /home/runner/.ssh/id_rsa
-        echo "########### /home/runner/.ssh/authorized_keys #############"
-        cat /home/runner/.ssh/authorized_keys
-        echo "########################"
-
-
-        echo "########## cat /etc/security/access.conf ##############"
-        sudo cat /etc/security/access.conf
-
-        echo "########## ls -larth /etc/pam.d/ ##############"
-        sudo ls -larth /etc/pam.d/
-
-        echo "########## cat /etc/pam.d/sshd ##############"
-        sudo cat /etc/pam.d/sshd
-
-        echo "########## grep -r runner /etc/* ##############"
-        sudo grep -r runner /etc/*
-
-
-        
-
-
-
-        
-        echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaossudopasswd --shell /bin/bash
-        
-        mkdir -p ~/.ssh
-        sudo ls -la /home/chaos/.ssh/
-        sudo ls -la /home/runner/.ssh/
-        sudo cp -rf /home/chaos/.ssh/id_rsa /home/chaos/.ssh/id_rsa.pub /home/runner/.ssh/
-
-        sudo chown -R runner:docker /home/runner/.ssh/
-        chmod 400 /home/runner/.ssh/id_rsa
-        chmod 640 /home/runner/.ssh/id_rsa.pub
-        cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
-
-        chmod 400 /home/runner/.ssh/authorized_keys
-
-        
-        sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
-        sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
-        sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
-        sudo chmod 640 /home/chaossudopasswd/.ssh/authorized_keys
-        sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
-
-    - name: Debug host github actions 2
-      run: |
-        sudo -u chaos ssh 127.0.0.1 "id"
-        ssh -vvv chaos@127.0.0.1 "id"
-        ssh -vvv 127.0.0.1 "id"
+        #sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -138,11 +56,11 @@ jobs:
         
     - name: Test with pytest
       run: |
-        pytest .
+        sudo -u chaos pytest .
 
     - name: Run chaos with ansible test
       run: |
-        chaos run chaos-integration-tests/withoutbecomepasswd.json
+        sudo -u chaos chaos run chaos-integration-tests/withoutbecomepasswd.json
 
     
 
