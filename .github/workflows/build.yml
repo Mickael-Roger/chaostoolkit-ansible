@@ -47,8 +47,8 @@ jobs:
         
     - name: Install dependencies
       run: |
-        sudo -u chaos python -m pip install --upgrade pip
-        sudo -u chaos python -m pip install pytest pylama
+        sudo python -m pip install --upgrade pip
+        sudo python -m pip install pytest pylama
         if [ -f requirements.txt ]; then sudo -u chaos pip install -r requirements.txt; fi
         
     - name: Lint with pylama
