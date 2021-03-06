@@ -20,7 +20,7 @@ jobs:
     - name: Install OS requirements
       run: |
         sudo apt update
-        sudo apt install -y openssh-server gcc python3-dev glibc-dev libffi-dev openssl-dev cargo
+        sudo apt install -y openssh-server gcc
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
