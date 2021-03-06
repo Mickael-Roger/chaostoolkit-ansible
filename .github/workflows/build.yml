@@ -35,9 +35,6 @@ jobs:
         echo "############# Change owner #############"
         sudo chown -R chaos:chaos .
 
-
-        
-    
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -72,6 +69,7 @@ jobs:
 
     - name: Run chaos with ansible test
       run: |
+        sudo sh -c 'echo "\n127.0.0.1  host1\n127.0.0.1  host2" >> /etc/hosts'
         sudo -u chaos chaos run chaos-integration-tests/withoutbecomepasswd.json
 
         #sudo sh -c 'echo "chaos ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
