@@ -35,6 +35,8 @@ jobs:
         echo "############# Change owner #############"
         sudo chown -R chaos:chaos .
 
+        sudo apt remove -y ansible
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
