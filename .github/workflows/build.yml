@@ -31,10 +31,9 @@ jobs:
         cat /etc/passwd
 
 
-        ls -larth /home/runner/.ssh/
-
         mkdir -p /home/runner/.ssh
         ssh-keygen -q -N "" -f /home/runner/.ssh/id_rsa
+        ls -larth /home/runner/.ssh/
         cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
         sudo cp /home/runner/.ssh/id_rsa.pub /etc/ssh/ssh_known_hosts
         chmod 640 /home/runner/.ssh/authorized_keys
