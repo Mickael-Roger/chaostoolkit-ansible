@@ -18,7 +18,7 @@
                 "tolerance": {
                   "type": "jsonpath",
                   "path": "$.localhost.task",
-                  "expect": "chaos"
+                  "expect": "/home/chaos"
                 },
                 "provider": {
                     "type": "python",
@@ -31,7 +31,7 @@
                         "become": false,
                         "ansible": {
                             "module": "shell",
-                            "args": "users"
+                            "args": "pwd"
                         }
                     }
                 }
