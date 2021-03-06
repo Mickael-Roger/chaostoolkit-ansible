@@ -31,6 +31,10 @@ jobs:
         cat /etc/passwd
 
         ssh-keygen -q -N "" -f /home/runner/.ssh/id_rsa
+        cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
+        chdmo 400 /home/runner/.ssh/authorized_keys
+
+        ls -la /home/runner/.ssh/
 
         ssh -vvv 127.0.0.1 "id"
 
