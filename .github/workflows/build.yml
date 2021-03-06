@@ -45,7 +45,7 @@ jobs:
       run: |
         sudo python -m pip install --upgrade pip
         sudo python -m pip install pytest pylama
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements.txt ]; then sudo pip install -r requirements.txt; fi
         
     - name: Lint with pylama
       run: |
