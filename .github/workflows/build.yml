@@ -35,15 +35,15 @@ jobs:
         echo "############# Change owner #############"
         sudo chown -R chaos:chaos .
 
-        sudo apt remove -y ansible
-
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
     
     - name: Set up ansible ${{ matrix.ansible-version}}
-      run: sudo ANSIBLE_SKIP_CONFLICT_CHECK=1 python -m pip install ansible==${{ matrix.ansible-version }}
+      run: |
+        sudo apt remove -y ansible
+        sudo python -m pip install ansible==${{ matrix.ansible-version }}
 
     - name: Set up chaos ${{ matrix.chaos-version}}
       run: sudo python -m pip install chaostoolkit==${{ matrix.chaos-version }}
