@@ -19,9 +19,6 @@ jobs:
 
     - name: OS, users and ssh requirements
       run: |
-        sudo apt update
-        sudo DEBIAN_FRONTEND=noninteractive apt install -y openssh-server openssh-client
-
         sudo ssh-keygen -A
         sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
         sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
@@ -46,8 +43,8 @@ jobs:
         
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install pytest pylama
+        sudo python -m pip install --upgrade pip
+        sudo python -m pip install pytest pylama
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         
     - name: Lint with pylama
