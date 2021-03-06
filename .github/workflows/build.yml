@@ -72,8 +72,8 @@ jobs:
         sudo sh -c 'echo "\n127.0.0.1  host1\n127.0.0.1  host2" >> /etc/hosts'
         sudo -u chaos chaos run chaos-integration-tests/withoutbecomepasswd.json
 
-        #sudo sh -c 'echo "chaos ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
-        #sudo -u chaos chaos run chaos-integration-tests/withbecomepasswd.json
+        sudo sh -c 'echo "chaos ALL=(ALL) ALL" > /etc/sudoers.d/chaos'
+        sudo -u chaos chaos run chaos-integration-tests/withbecomepasswd.json
 
     
 
