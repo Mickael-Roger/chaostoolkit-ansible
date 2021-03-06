@@ -43,6 +43,8 @@ jobs:
         sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
         sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
         sudo sh -c 'echo -e "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
+        sudo cat /etc/ssh/sshd_config
+        sudo sshd -T
         sudo systemctl restart ssh || sudo systemctl status ssh
 
     - name: Debug host github actions 2
