@@ -30,11 +30,9 @@ jobs:
     - name: OS, users and ssh requirements
       run: |
         sudo apt update
-        sudo apt install -y openssh-server gcc
-        sudo adduser -D chaos -s /bin/bash
-        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaos
-        sudo adduser -D chaossudopasswd -s /bin/bash
-        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaossudopasswd
+        sudo DEBIAN_FRONTEND=noninteractive apt install -y openssh-server openssh-client
+        echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
+        echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaossudopasswd --shell /bin/bash
         sudo ssh-keygen -A
         sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
         sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
