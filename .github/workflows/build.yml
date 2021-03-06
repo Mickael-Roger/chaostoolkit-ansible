@@ -44,23 +44,25 @@ jobs:
         sudo chown root:root /etc/ssh/ssh_known_hosts
         sudo chmod 644 /etc/ssh/ssh_known_hosts
 
-        echo "########################"
+        echo "########### ls -la /home/runner/.ssh/ #############"
 
         ls -la /home/runner/.ssh/
 
-        echo "########################"
+        echo "######### /home/runner/.ssh/id_rsa ###############"
 
         cat /home/runner/.ssh/id_rsa
-        echo "########################"
+        echo "########### /home/runner/.ssh/authorized_keys #############"
         cat /home/runner/.ssh/authorized_keys
         echo "########################"
 
 
         echo "########################"
-        echo "########################"
+        echo "########## SSH ##############"
 
 
         ssh -vvv 127.0.0.1 "id"
+
+        echo "########## end of SSH ##############"
 
         exit 1
 
