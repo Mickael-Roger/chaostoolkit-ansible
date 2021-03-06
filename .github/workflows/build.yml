@@ -28,8 +28,8 @@ jobs:
         mkdir -p ~/.ssh
         sudo ls -la /home/chaos/.ssh/
         sudo ls -la /home/runner/.ssh/
-        sudo cp -rf /home/chaos/.ssh/id_rsa* /home/runner/.ssh/
-        sudo chown -R runner:docker /home/runner/.ssh/id_rsa*
+        sudo cp -rf /home/chaos/.ssh/id_rsa /home/chaos/.ssh/id_rsa.pub /home/runner/.ssh/
+        sudo chown -R runner:docker /home/runner/.ssh/
         chmod 400 /home/runner/.ssh/id_rsa
         chmod 640 /home/runner/.ssh/id_rsa.pub
         cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
