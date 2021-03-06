@@ -17,24 +17,21 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Debug host github actions
-      run: |
-        sudo systemctl status ssh
-        sudo apt update
-        sudo apt install -y net-tools
-        sudo netstat -anp
-        sudo ls /etc/ssh/
-        sudo cat /etc/ssh/sshd_config
-
-
     - name: OS, users and ssh requirements
       run: |
+        id 
+        pwd
+        cd
+        pwd
+        exit 1
         sudo apt update
         sudo DEBIAN_FRONTEND=noninteractive apt install -y openssh-server openssh-client
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaossudopasswd --shell /bin/bash
         sudo ssh-keygen -A
         sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
+        mkdir -p ~/.ssh
+
         sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
         sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
         sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
@@ -44,7 +41,6 @@ jobs:
         sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
         sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
         sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
-        sudo cat /etc/ssh/ssh_config
         sudo systemctl restart ssh
 
     - name: Debug host github actions 2
@@ -75,7 +71,7 @@ jobs:
 
     - name: Run chaos with ansible test
       run: |
-        sudo -u chaos chaos run chaos-integration-tests/withoutbecomepasswd.json
+        chaos run chaos-integration-tests/withoutbecomepasswd.json
 
     
 
