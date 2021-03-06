@@ -68,7 +68,7 @@ jobs:
         pip install -U setuptools wheel twine
         sudo -u chaos python3 setup.py release
         sudo -u chaos ls -la dist/
-        sudo -u chaos pip install dist/chaostoolkit-ansible-FAKE-VERSION.tar.gz
+        sudo -u chaos pip install dist/chaostoolkit_ansible-FAKE_VERSION-py3-none-any.whl
 
     - name: Run chaos with ansible test
       run: |
