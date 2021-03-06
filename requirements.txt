@@ -1,4 +1,6 @@
+chaostoolkit>=1.7.1
 chaostoolkit-lib>=1.1.2
+chaostoolkit-lib[jsonpath]
 logzero
 ansible>=2.9.0,<3.0
 jsonpath-ng

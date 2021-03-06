@@ -12,14 +12,23 @@ jobs:
     strategy:
       matrix:
         python-version: [3.5, 3.6, 3.7, 3.8, 3.9]
+        ansible-version: [2.9.18, 2.10.7]
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Install OS requirements
+      run: |
+        sudo apt update
+        sudo apt install -y openssh-server gcc python3-dev glibc-dev libffi-dev openssl-dev cargo
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    
+    - name: Set up ansible ${{ matrix.ansible-version}}
+      run: python -m pip install ansible==${{ matrix.ansible-version }}
         
     - name: Install dependencies
       run: |
@@ -34,3 +43,30 @@ jobs:
     - name: Test with pytest
       run: |
         pytest .
+
+    - name: Create users and ssh keys
+      run: |
+        sudo adduser -D chaos -s /bin/bash
+        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaos
+        sudo adduser -D chaossudopasswd -s /bin/bash
+        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaossudopasswd
+        sudo ssh-keygen -A
+        sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
+        sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
+        sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
+        sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
+        sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
+        sudo chmod 400 /home/chaossudopasswd/.ssh/authorized_keys
+        sudo echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos
+        sudo echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd
+        sudo systemctl start ssh
+
+    - name: Run chaos with ansible test
+      run: |
+        sudo -u chaos chaos run chaos-integration-tests/withoutbecomepasswd.json
+
+    
+
+        
+
+  
