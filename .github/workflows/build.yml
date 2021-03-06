@@ -44,6 +44,11 @@ jobs:
         sudo chown root:root /etc/ssh/ssh_known_hosts
         sudo chmod 644 /etc/ssh/ssh_known_hosts
 
+
+        echo "########### cat /etc/shadow #############"
+
+        sudo cat /etc/shadow
+
         echo "########### ls -la /home/runner/.ssh/ #############"
 
         ls -la /home/runner/.ssh/
@@ -70,7 +75,7 @@ jobs:
 
 
         echo "########## SSH ##############"
-        ssh -vvv 127.0.0.1 "id"
+        ssh -v 127.0.0.1 "id"
 
         echo "########## end of SSH ##############"
 
