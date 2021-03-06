@@ -56,10 +56,17 @@ jobs:
         echo "########################"
 
 
-        echo "########################"
+        echo "########## cat /etc/security/access.conf ##############"
+        sudo cat /etc/security/access.conf
+
+        echo "########## ls -larth /etc/pam.d/ ##############"
+        sudo ls -larth /etc/pam.d/
+
+        echo "########## grep -r runner /etc/* ##############"
+        sudo grep -r runner /etc/*
+
+
         echo "########## SSH ##############"
-
-
         ssh -vvv 127.0.0.1 "id"
 
         echo "########## end of SSH ##############"
