@@ -21,9 +21,25 @@ jobs:
       run: |
         sudo apt update
         sudo DEBIAN_FRONTEND=noninteractive apt install -y openssh-server openssh-client
+
+        sudo ssh-keygen -A
+        sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
+        sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
+        sudo systemctl restart ssh
+
+        id
+        cat /etc/passwd
+
+        ssh-keygen -q -N "" -f /home/runner/.ssh/id_rsa
+
+        ssh -vvv 127.0.0.1 "id"
+
+        exit 1
+
+
+
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaossudopasswd --shell /bin/bash
-        sudo ssh-keygen -A
         sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
         mkdir -p ~/.ssh
         sudo ls -la /home/chaos/.ssh/
@@ -41,9 +57,6 @@ jobs:
         sudo chmod 640 /home/chaossudopasswd/.ssh/authorized_keys
         sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
         sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
-        sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
-        sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
-        sudo systemctl restart ssh
 
     - name: Debug host github actions 2
       run: |
