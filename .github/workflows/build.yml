@@ -40,8 +40,8 @@ jobs:
         sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
         sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
         sudo chmod 400 /home/chaossudopasswd/.ssh/authorized_keys
-        sudo echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos
-        sudo echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd
+        sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
+        sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
         sudo systemctl start ssh
 
     - name: Debug host github actions 2
