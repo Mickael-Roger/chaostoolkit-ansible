@@ -50,7 +50,7 @@ jobs:
 
         echo "########################"
 
-        cat /home/runner/.ssh/id_rsa.pub 
+        cat /home/runner/.ssh/id_rsa
         echo "########################"
         cat /home/runner/.ssh/authorized_keys
         echo "########################"
