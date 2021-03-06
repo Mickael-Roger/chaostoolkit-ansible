@@ -36,7 +36,7 @@ jobs:
         sudo chown -R chaos:chaos .
 
 
-        #sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
+        
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -63,9 +63,18 @@ jobs:
       run: |
         sudo -u chaos pytest .
 
+    - name: Generate a pip package
+      run: |
+        pip install -U setuptools wheel twine
+        sudo -u chaos python3 setup.py release
+        sudo -u chaos ls -la dist/
+
     - name: Run chaos with ansible test
       run: |
         sudo -u chaos chaos run chaos-integration-tests/withoutbecomepasswd.json
+
+        #sudo sh -c 'echo "chaos ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
+        #sudo -u chaos chaos run chaos-integration-tests/withbecomepasswd.json
 
     
 
