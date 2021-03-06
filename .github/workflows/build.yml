@@ -19,11 +19,6 @@ jobs:
 
     - name: OS, users and ssh requirements
       run: |
-        id 
-        pwd
-        cd
-        pwd
-        exit 1
         sudo apt update
         sudo DEBIAN_FRONTEND=noninteractive apt install -y openssh-server openssh-client
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
@@ -31,12 +26,17 @@ jobs:
         sudo ssh-keygen -A
         sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
         mkdir -p ~/.ssh
-
+        sudo cp /home/chaos/.ssh/id_rsa* /home/runner/.ssh/
+        sudo chown -R runner:docker /home/runner/.ssh/id_rsa*
+        chmod 400 /home/runner/.ssh/id_rsa
+        chmod 640 /home/runner/.ssh/id_rsa.pub
+        cp /home/runner/.ssh/id_rsa.pub /home/runner/.ssh/authorized_keys
+        chmod 400 /home/runner/.ssh/authorized_keys
         sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
         sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
         sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
         sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
-        sudo chmod 400 /home/chaossudopasswd/.ssh/authorized_keys
+        sudo chmod 640 /home/chaossudopasswd/.ssh/authorized_keys
         sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
         sudo sh -c 'echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd'
         sudo sh -c 'echo "\nPubkeyAuthentication yes\n\nAuthorizedKeysFile	.ssh/authorized_keys\n" >> /etc/ssh/sshd_config'
@@ -45,7 +45,9 @@ jobs:
 
     - name: Debug host github actions 2
       run: |
-        sudo -u chaos ssh 127.0.0.1 "ls -la"
+        sudo -u chaos ssh 127.0.0.1 "id"
+        ssh -vvv chaos@127.0.0.1 "id"
+        ssh -vvv 127.0.0.1 "id"
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
