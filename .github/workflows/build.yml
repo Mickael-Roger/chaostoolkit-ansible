@@ -11,16 +11,42 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.5, 3.6, 3.7, 3.8, 3.9]
-        ansible-version: [2.9.18, 2.10.7]
+        python-version: [3.5] #, 3.6, 3.7, 3.8, 3.9]
+        ansible-version: [2.9.18] #, 2.10.7]
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install OS requirements
+    - name: Debug host github actions
+      run: |
+        sudo systemctl status ssh
+        sudo netstat -anp
+        sudo ls /etc/ssh/
+        sudo cat /etc/ssh/sshd_config
+
+
+    - name: OS, users and ssh requirements
       run: |
         sudo apt update
         sudo apt install -y openssh-server gcc
+        sudo adduser -D chaos -s /bin/bash
+        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaos
+        sudo adduser -D chaossudopasswd -s /bin/bash
+        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaossudopasswd
+        sudo ssh-keygen -A
+        sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
+        sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
+        sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
+        sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
+        sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
+        sudo chmod 400 /home/chaossudopasswd/.ssh/authorized_keys
+        sudo echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos
+        sudo echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd
+        sudo systemctl start ssh
+
+    - name: Debug host github actions 2
+      run: |
+        sudo -u chaos ssh 127.0.0.1 "ls -la"
     
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
@@ -43,23 +69,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest .
-
-    - name: Create users and ssh keys
-      run: |
-        sudo adduser -D chaos -s /bin/bash
-        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaos
-        sudo adduser -D chaossudopasswd -s /bin/bash
-        echo -e 'passwordsuper\npasswordsuper' | sudo passwd chaossudopasswd
-        sudo ssh-keygen -A
-        sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
-        sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
-        sudo sudo -u chaossudopasswd mkdir /home/chaossudopasswd/.ssh
-        sudo cp /home/chaos/.ssh/id_rsa.pub /home/chaossudopasswd/.ssh/authorized_keys
-        sudo chown -R chaossudopasswd: /home/chaossudopasswd/.ssh/authorized_keys
-        sudo chmod 400 /home/chaossudopasswd/.ssh/authorized_keys
-        sudo echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos
-        sudo echo "chaossudopasswd ALL=(ALL) ALL" > /etc/sudoers.d/chaossudopasswd
-        sudo systemctl start ssh
 
     - name: Run chaos with ansible test
       run: |
