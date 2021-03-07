@@ -2,4 +2,4 @@
 
 """Top-level package for chaostoolkit-ansible."""
 
-__version__ = '1.9.0'
+__version__ = '0.1.9'
