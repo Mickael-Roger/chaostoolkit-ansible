@@ -145,7 +145,7 @@ def chaosansible_run(host_list: list = ('localhost'),
 
     variable_manager = VariableManager(loader=loader, inventory=inventory)
     if become_ask_pass:
-        passwords = dict(become_pass=ansible_become_pass)
+        passwords = dict(become_pass=become_ask_pass)
     else:
         passwords = None
 
