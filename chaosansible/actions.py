@@ -197,10 +197,17 @@ def chaosansible_run(host_list: list = ('localhost'),
     shutil.rmtree(C.DEFAULT_LOCAL_TMP, True)
 
     if len(results_callback.host_failed) > 0:
+        print("Ansible error(s): ")
+        for error in results_callback.host_failed:
+            print(results_callback.host_failed[error].__dict__)
+
         raise FailedActivity("Failed to run ansible task")
 
     elif len(results_callback.host_unreachable) > 0:
-        print("Unreach")
+        print("Unreachable host(s): ")
+        for error in results_callback.host_unreachable:
+            print(error)
+
         raise FailedActivity("At least one target is down")
 
     else:
