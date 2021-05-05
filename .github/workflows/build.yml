@@ -25,15 +25,23 @@ jobs:
         sudo sh -c 'echo "\n   StrictHostKeyChecking no\n" >> /etc/ssh/ssh_config'
         sudo systemctl restart ssh
 
+        sudo systemctl status ssh
 
         echo "############# Create chaos user #############"
         echo -e 'passwordsuper\npasswordsuper' | sudo adduser chaos --shell /bin/bash
         sudo sudo -u chaos ssh-keygen -q -N "" -f /home/chaos/.ssh/id_rsa
+
+        sudo sudo -u chaos chmod 400 /home/chaos/.ssh/id_rsa
+
         sudo sudo -u chaos cp /home/chaos/.ssh/id_rsa.pub /home/chaos/.ssh/authorized_keys
         sudo sh -c 'echo "chaos ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/chaos'
 
         echo "############# Change owner #############"
         sudo chown -R chaos:chaos .
+
+        echo "############# Only in case of ssh debugging #############"
+        sudo -u chaos ssh -vvv -i /home/chaos/.ssh/id_rsa chaos@127.0.0.1 id
+
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
