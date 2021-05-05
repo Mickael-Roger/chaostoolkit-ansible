@@ -207,7 +207,7 @@ def chaosansible_run(host_list: list = ('localhost'),
         print("Unreachable host(s): ")
         for error in results_callback.host_unreachable:
             print(error)
-            
+
         raise FailedActivity("At least one target is down")
 
     else:
