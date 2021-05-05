@@ -122,8 +122,7 @@ def chaosansible_run(host_list: list = ('localhost'),
                                     check=False,
                                     diff=False,
                                     private_key_file=ssh_key_path,
-                                    remote_user=ansible_user,
-                                    become_ask_pass=become_ask_pass)
+                                    remote_user=ansible_user)
 
     # Update host_list regarding the number of desired target.
     # Need to generate a new host-list because after being update
@@ -145,7 +144,10 @@ def chaosansible_run(host_list: list = ('localhost'),
     results_callback = ResultsCollectorJSONCallback()
 
     variable_manager = VariableManager(loader=loader, inventory=inventory)
-    passwords = dict(vault_pass='secret')
+    if become_ask_pass:
+        passwords = dict(become_pass=ansible_become_pass)
+    else:
+        passwords = None
 
     # Ansible taskmanager
     tqm = TaskQueueManager(

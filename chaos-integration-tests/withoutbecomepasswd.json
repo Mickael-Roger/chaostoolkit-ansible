@@ -7,8 +7,7 @@
         "ansible_module_path": "/var/lib/ansible/share",
         "ansible_become_user": "root",
         "ansible_ssh_private_key": "/home/chaos/.ssh/id_rsa",
-        "ansible_user": "chaos",
-        "become_ask_pass": "passwordsuper"
+        "ansible_user": "chaos"
     },
     "steady-state-hypothesis": {
         "title": "Tests",
