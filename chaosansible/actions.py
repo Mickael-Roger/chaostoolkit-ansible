@@ -108,11 +108,11 @@ def chaosansible_run(
     configuration = configuration or {}
 
     # Ansible configuration elements
-    module_path = configuration.get("ansible_module_path") or None
-    become_user = configuration.get("ansible_become_user") or None
-    ssh_key_path = configuration.get("ansible_ssh_private_key") or None
-    ansible_user = configuration.get("ansible_user") or None
-    become_ask_pass = configuration.get("become_ask_pass") or None
+    module_path = configuration.get("ansible_module_path")
+    become_user = configuration.get("ansible_become_user")
+    ssh_key_path = configuration.get("ansible_ssh_private_key")
+    ansible_user = configuration.get("ansible_user")
+    become_ask_pass = configuration.get("become_ask_pass")
 
     context.CLIARGS = ImmutableDict(
         connection="smart",
