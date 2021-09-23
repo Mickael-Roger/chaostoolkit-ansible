@@ -4,12 +4,15 @@
 
 from typing import List
 
-from chaoslib.discovery.discover import (discover_actions, discover_probes,
-                                         initialize_discovery_result)
+from chaoslib.discovery.discover import (
+    discover_actions,
+    discover_probes,
+    initialize_discovery_result,
+)
 from chaoslib.types import DiscoveredActivities, Discovery
 from logzero import logger
 
-__version__ = 'IN_PROGRESS'
+__version__ = "IN_PROGRESS"
 
 
 def discover(discover_system: bool = True) -> Discovery:
@@ -19,7 +22,8 @@ def discover(discover_system: bool = True) -> Discovery:
     logger.info("Discovering capabilities from chaostoolkit-ansible")
 
     discovery = initialize_discovery_result(
-        "chaostoolkit-ansible", __version__, "ansible")
+        "chaostoolkit-ansible", __version__, "ansible"
+    )
     discovery["activities"].extend(load_exported_activities())
 
     return discovery
