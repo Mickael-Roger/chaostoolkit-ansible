@@ -113,6 +113,7 @@ def chaosansible_run(
     ssh_key_path = configuration.get("ansible_ssh_private_key")
     ansible_user = configuration.get("ansible_user")
     become_ask_pass = configuration.get("become_ask_pass")
+    ssh_extra_args = configuration.get("ansible_ssh_extra_args")
 
     context.CLIARGS = ImmutableDict(
         connection="smart",
@@ -126,6 +127,7 @@ def chaosansible_run(
         diff=False,
         private_key_file=ssh_key_path,
         remote_user=ansible_user,
+        ssh_extra_args=ssh_extra_args,
     )
 
     # Update host_list regarding the number of desired target.
