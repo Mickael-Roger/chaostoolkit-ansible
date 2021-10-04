@@ -22,7 +22,7 @@ This project is a collection of [actions][] and [probes][], gathered as an exten
 
 ## Install
 
-This package requires Python 3.5+
+This package requires Python 3.6+
 
 To be used from your experiment, this package must be installed in the Python environment where [chaostoolkit][] already lives.
 
@@ -181,6 +181,7 @@ Configuration variables that can be used by this driver are:
 - **ansible_ssh_private_key**: Your ssh private key used to connect to targets (~/.ssh/id_rsa by default)
 - **ansible_user**: User on target host used by ansible (current username by default)
 - **become_ask_pass**: Password to escalate privileged when sudo needs one
+- **ansible_extra_ssh_args**: SSH extra args
 
 In case you need to change one/or many default configuration(s), you can specify your value using the configuration block
 
