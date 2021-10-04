@@ -192,7 +192,9 @@ def chaosansible_run(
         )
 
     # Create an ansible playbook
-    play = Play().load(play_source, variable_manager=variable_manager, loader=loader)
+    play = Play().load(play_source,
+                       variable_manager=variable_manager,
+                       loader=loader)
 
     # Run it
     try:
