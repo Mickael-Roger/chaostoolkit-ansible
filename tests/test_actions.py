@@ -34,7 +34,7 @@ def test_chaosansible_run_unreachable():
 
     with pytest.raises(ActivityFailed) as excinfo:
         chaosansible_run(
-            ansible={"module": "shell", "args": "ls"}, host_list=["0.0.0.0"]
+            ansible={"module": "shell", "args": "ls"}, host_list=["1.1.1.1"]
         )
 
     assert "At least one target is down" in str(excinfo.value)
