@@ -83,8 +83,8 @@ steady-state-hypothesis:
     name: test-current-directory
     tolerance:
       type: jsonpath
-      target: "$.*.task"
-      pattern: /home/me
+      path: "$.*.task"
+      expect: /home/me
     provider:
       type: python
       module: chaosansible.probes
