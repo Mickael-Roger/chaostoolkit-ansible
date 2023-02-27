@@ -4,6 +4,10 @@
 
 [Unreleased]: https://github.com/Mickael-Roger/chaostoolkit-ansible/compare/0.2.0...HEAD
 
+### Changed
+
+- Fixed python minimal dependency pattern as per https://github.com/pypa/packaging/issues/673
+
 ### Added
 
 - MANIFEST.in for a complete source distribution for integrating with the
